@@ -5,15 +5,24 @@ const express = require("express");
 
 const app = express();
 
-const fs = require("fs").promises;
-const crypto = require("crypto");
+const dotenv = require("dotenv");
+
 const {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-} = require("./models/contacts");
+  getUsers,
+  addUser,
+  getUser,
+  removeUser,
+  updateUser,
+} = require("./controllers/controllers");
+
+const { validateUser, validateFields } = require("./middlewares/middlewares");
+
+dotenv.config({
+  path:
+    process.env.NODE_ENV === "development"
+      ? "./envs/dev.env"
+      : "./envs/prod.env",
+});
 
 const contactsRouter = require("./routes/api/contacts");
 
@@ -33,97 +42,22 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message });
 });
 
-app.get("/api/contacts", async (req, res) => {
-  try {
-    const { contacts } = await listContacts();
-    res.status(200).json({
-      contacts,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
+app.use("/api/contacts/:id", validateUser);
 
-app.post("/api/contacts", async (req, res) => {
-  try {
-    const { name, email, phone } = req.body;
+app.use("/api/contacts/:id", validateFields);
 
-    const newContact = {
-      name,
-      email,
-      phone,
-      id: crypto.randomBytes(16).toString("hex"),
-    };
+app.get("/api/contacts", getUsers);
 
-    const contactsDB = await fs.readFile("/models/contacts.json");
-    const contacts = JSON.parse(contactsDB);
-    contacts.push(newContact);
+app.post("/api/contacts", addUser);
 
-    await fs.writeFile("/models/contacts.json", JSON.stringify(contacts));
+app.get("/api/contacts/:id", getUser);
 
-    res.status(200).json({
-      msg: "Success!",
-      contact: newContact,
-    });
+app.delete("/api/contacts/:id", removeUser);
 
-    res.sendStatus(500);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.get("/api/contacts/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const contact = await getContactById(id);
-    if (contact) {
-      res.status(200).json({
-        message: "Success!",
-        contact,
-      });
-    } else {
-      res.status(404).json({
-        message: "Not found!",
-        contact,
-      });
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.delete("/api/contacts/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const contactsDB = await fs.readFile("/models/contacts.json");
-    const contacts = JSON.parse(contactsDB);
-    const updatedContacts = contacts.filter(
-      ({ contactId }) => contactId !== id
-    );
-    res.status(200).json({
-      msg: "Success!",
-      updatedContacts,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.put("/api/contacts/:id", async (req, res) => {
-  try {
-    const { name, email, phone } = req.body;
-    const { id } = req.params;
-    const contactsDB = await fs.readFile("/models/contacts.json");
-    const contacts = JSON.parse(contactsDB);
-    const contact = contacts.find(({ contactId }) => contactId === id);
-    const gatheredContact = [...contact, ...req.body];
-  } catch (err) {
-    console.log(err);
-  }
-});
+app.put("/api/contacts/:id", updateUser);
 
 module.exports = app;
 
 // Server restart
 // netstat -ano | findstr :3001
-// Task Manager - Details - stop process with that PID
+// Task Manager - Details - stop process with that IPD
