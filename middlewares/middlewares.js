@@ -19,25 +19,26 @@ exports.validateUser = async (req, res, next) => {
 
 exports.validateFields = async (req, res, next) => {
   const { id } = req.params;
-  const { body } = req.body;
+  const { body } = req;
 
-  const { error, schema } = dataValidate(body);
-
-  const { contact } = await updateContact(id, body);
+  const { error } = dataValidate(body);
 
   if (error) {
     return res.status(400).json({
-      message: `missing ${body[type]} field`,
+      message: `Missing required ${error.details
+        .map((detail) => detail.message)
+        .join(", ")} field`,
     });
   }
 
   if (!body) {
     return res.status(400).json({
-      message: "missing fields",
+      message: "Missing fields",
     });
   }
 
-  req.contact = contact;
+  const { contact } = await updateContact(id, body);
 
+  req.contact = contact;
   next();
 };
