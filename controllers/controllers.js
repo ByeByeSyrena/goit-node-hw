@@ -32,7 +32,6 @@ exports.addUser = async (req, res) => {
     };
     await addContact(newContact);
     res.status(200).json({
-      msg: "Success!",
       contact: newContact,
     });
   } catch (err) {
