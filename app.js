@@ -5,24 +5,27 @@ const express = require("express");
 
 const app = express();
 
-const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 
-const {
-  getUsers,
-  addUser,
-  getUser,
-  removeUser,
-  updateUser,
-} = require("./controllers/controllers");
+// const {
+//   getUsers,
+//   addUser,
+//   getUser,
+//   removeUser,
+//   updateUser,
+// } = require("./controllers/controllers");
 
-const { validateUser, validateFields } = require("./middlewares/middlewares");
+// const {
+//   validateContact,
+//   validateFields,
+// } = require("./middlewares/middlewares");
 
-dotenv.config({
-  path:
-    process.env.NODE_ENV === "development"
-      ? "./envs/dev.env"
-      : "./envs/prod.env",
-});
+// dotenv.config({
+//   path:
+//     process.env.NODE_ENV === "development"
+//       ? "./envs/dev.env"
+//       : "./envs/prod.env",
+// });
 
 const contactsRouter = require("./routes/api/contacts");
 
@@ -42,19 +45,19 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message });
 });
 
-app.use("/api/contacts/:id", validateUser);
+// app.use("/api/contacts/:id", validateContact);
 
-app.use("/api/contacts/:id", validateFields);
+// app.use("/api/contacts/:id", validateFields);
 
-app.get("/api/contacts", getUsers);
+// app.get("/api/contacts", getUsers);
 
-app.post("/api/contacts", addUser);
+// app.post("/api/contacts", addUser);
 
-app.get("/api/contacts/:id", getUser);
+// app.get("/api/contacts/:id", getUser);
 
-app.delete("/api/contacts/:id", removeUser);
+// app.delete("/api/contacts/:id", removeUser);
 
-app.put("/api/contacts/:id", updateUser);
+// app.put("/api/contacts/:id", updateUser);
 
 module.exports = app;
 
