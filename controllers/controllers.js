@@ -58,8 +58,9 @@ exports.getUser = async (req, res) => {
 
 exports.removeUser = async (req, res) => {
   try {
-    const { contact } = await removeContact(req.params.id);
-    if (contact) {
+    const { id } = await removeContact(req.params.id);
+
+    if (id) {
       res.status(200).json({
         message: "Contact deleted",
       });
@@ -69,7 +70,8 @@ exports.removeUser = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
