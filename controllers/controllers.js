@@ -53,12 +53,7 @@ exports.getUser = async (req, res) => {
 
 exports.removeUser = async (req, res) => {
   try {
-    await removeContact(req.contact.id);
-    const { updatedContacts } = await removeContact(req.contact.id);
-    res.status(200).json({
-      message: "contact deleted",
-      updatedContacts,
-    });
+    await removeContact(req.params.id);
   } catch (err) {
     console.log(err);
   }
