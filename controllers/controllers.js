@@ -58,8 +58,8 @@ exports.getUser = async (req, res) => {
 
 exports.removeUser = async (req, res) => {
   try {
-    const removeContactById = await removeContact(req.params.id);
-    if (removeContactById) {
+    const { contact } = await removeContact(req.params.id);
+    if (contact) {
       res.status(200).json({
         message: "Contact deleted",
       });

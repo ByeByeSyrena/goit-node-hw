@@ -26,13 +26,14 @@ const getContactById = async (contactId) => {
 const removeContact = async (contactId) => {
   try {
     const contacts = await listContacts();
-    // const contact = contacts.find(({ id }) => id !== contactId.toString());
+    const contact = contacts.find(({ id }) => id !== contactId.toString());
 
     const updatedContacts = contacts.filter(
       ({ id }) => id !== contactId.toString()
     );
 
     await fs.writeFile(contactsPath, JSON.stringify(updatedContacts), "utf8");
+    return contact;
   } catch (err) {
     console.log(err);
   }
