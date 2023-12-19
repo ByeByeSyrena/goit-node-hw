@@ -43,6 +43,11 @@ exports.getUser = async (req, res) => {
   try {
     const { id } = req.params;
     const contact = await getContactById(id);
+
+    if (!contact) {
+      res.status(404).json({ message: "Not found" });
+    }
+
     res.status(200).json({
       contact,
     });
@@ -53,7 +58,16 @@ exports.getUser = async (req, res) => {
 
 exports.removeUser = async (req, res) => {
   try {
-    await removeContact(req.params.id);
+    const removeContactById = await removeContact(req.params.id);
+    if (removeContactById) {
+      res.status(200).json({
+        message: "Contact deleted",
+      });
+    } else {
+      res.status(404).json({
+        message: "Not found",
+      });
+    }
   } catch (err) {
     console.log(err);
   }
