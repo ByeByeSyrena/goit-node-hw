@@ -11,7 +11,7 @@ const {
 
 exports.getUsers = async (req, res) => {
   try {
-    const { contacts } = await listContacts();
+    const contacts = await listContacts();
     res.status(200).json({
       contacts,
     });
@@ -41,7 +41,8 @@ exports.addUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    const contact = await getContactById(req.contact.id);
+    const { id } = req.params;
+    const contact = await getContactById(id);
     res.status(200).json({
       contact,
     });

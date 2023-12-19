@@ -2,10 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const {
-  validateContact,
-  validateFields,
-} = require("../../middlewares/middlewares");
+const { validateId, validateFields } = require("../../middlewares/middlewares");
 const {
   getUsers,
   getUser,
@@ -15,9 +12,9 @@ const {
 } = require("../../controllers/controllers");
 
 router.get("/", getUsers);
-router.get("/:id", validateContact, getUser);
+router.get("/:id", validateId, getUser);
 router.post("/", validateFields, addUser);
-router.delete("/:id", validateContact, removeUser);
-router.put("/:id", validateContact, validateFields, updateUser);
+router.delete("/:id", validateId, removeUser);
+router.put("/:id", validateId, validateFields, updateUser);
 
 module.exports = router;

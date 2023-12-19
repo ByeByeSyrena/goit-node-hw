@@ -1,20 +1,13 @@
-const { getContactById } = require("../models/contacts");
-
 const dataValidate = require("../helpers/dataValidator");
 
-exports.validateContact = async (req, res, next) => {
+exports.validateId = (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { contact } = await getContactById(id);
-
-    if (!contact) {
-      return res.status(404).json({
+    const { contactId } = req.params;
+    if (!contactId) {
+      res.status(404).json({
         message: "Not found",
       });
     }
-
-    req.contact = contact;
-
     next();
   } catch (err) {
     console.log(err);

@@ -5,28 +5,6 @@ const express = require("express");
 
 const app = express();
 
-// const dotenv = require("dotenv");
-
-// const {
-//   getUsers,
-//   addUser,
-//   getUser,
-//   removeUser,
-//   updateUser,
-// } = require("./controllers/controllers");
-
-// const {
-//   validateContact,
-//   validateFields,
-// } = require("./middlewares/middlewares");
-
-// dotenv.config({
-//   path:
-//     process.env.NODE_ENV === "development"
-//       ? "./envs/dev.env"
-//       : "./envs/prod.env",
-// });
-
 const contactsRouter = require("./routes/api/contacts");
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
@@ -44,20 +22,6 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message });
 });
-
-// app.use("/api/contacts/:id", validateContact);
-
-// app.use("/api/contacts/:id", validateFields);
-
-// app.get("/api/contacts", getUsers);
-
-// app.post("/api/contacts", addUser);
-
-// app.get("/api/contacts/:id", getUser);
-
-// app.delete("/api/contacts/:id", removeUser);
-
-// app.put("/api/contacts/:id", updateUser);
 
 module.exports = app;
 
