@@ -77,20 +77,26 @@ exports.removeUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    await updateContact(req.contact.id, req.contact.body);
-    const { name, email, phone, id } = await updateContact(
-      req.contact.id,
-      req.contact.body
-    );
+    const { id } = req.params;
+    const { body } = req;
 
-    res.status(200).json({
-      contact: {
-        name,
-        email,
-        phone,
-        id,
-      },
-    });
+    if (!body) {
+      return res.status(400).json({
+        message: "Missing fields",
+      });
+    }
+
+    const { contact } = await updateContact(id, body);
+
+    if (contact) {
+      res.status(200).json({
+        contact,
+      });
+    } else {
+      res.status(404).json({
+        message: "Not found",
+      });
+    }
   } catch (err) {
     console.log(err);
   }

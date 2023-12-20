@@ -53,16 +53,17 @@ const addContact = async (body) => {
 
 const updateContact = async (contactId, body) => {
   const contacts = await listContacts();
-  const contact = contacts.find(({ id }) => contactId === id);
-  const updatedContact = { ...contact, ...body };
+  const contactIndex = contacts.findIndex(({ id }) => id === contactId);
 
-  const updatedContacts = contacts.map((item) => {
-    if (item.id === contactId) {
-      return updatedContact;
-    }
-    return item;
-  });
-  await fs.writeFile(contactsPath, JSON.stringify(updatedContacts), "utf8");
+  if (contactIndex === -1) {
+    return { contact: null };
+  }
+
+  contacts[contactIndex] = { ...contacts[contactIndex], ...body };
+
+  await fs.writeFile(contactsPath, JSON.stringify(contacts), "utf8");
+
+  return { contact: contacts[contactIndex] };
 };
 
 module.exports = {
