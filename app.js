@@ -25,7 +25,3 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
-
-// Server restart
-// netstat -ano | findstr :3001
-// Task Manager - Details - stop process with that IPD
