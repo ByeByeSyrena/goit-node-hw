@@ -1,16 +1,14 @@
-const dataValidate = require("../helpers/dataValidator");
+const { dataValidator } = require("../helpers");
 
-exports.validateFields = async (req, res, next) => {
+const validateFields = async (req, res, next) => {
   try {
     const { body } = req;
 
-    const { error } = await dataValidate(body);
+    const { error } = await dataValidator(body);
 
     if (error) {
       return res.status(400).json({
-        message: `Validation error(s): ${error.details
-          .map((detail) => detail.message)
-          .join(", ")}`,
+        message: error.message,
       });
     }
 
@@ -19,3 +17,5 @@ exports.validateFields = async (req, res, next) => {
     console.error(err);
   }
 };
+
+module.exports = validateFields;
