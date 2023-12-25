@@ -13,9 +13,7 @@ const { ctrlWrapper, httpError } = require("../helpers");
 
 const getAllContacts = async (req, res) => {
   const contacts = await listContacts();
-  res.json({
-    contacts,
-  });
+  res.json(contacts);
 };
 
 const addOneContact = async (req, res) => {
@@ -28,9 +26,7 @@ const addOneContact = async (req, res) => {
     phone,
   };
   await addContact(newContact);
-  res.status(201).json({
-    contact: newContact,
-  });
+  res.status(201).json(newContact);
 };
 
 const getOneContact = async (req, res) => {
@@ -41,9 +37,7 @@ const getOneContact = async (req, res) => {
     httpError(404, "Not found");
   }
 
-  res.json({
-    contact,
-  });
+  res.json(contact);
 };
 
 const deleteContact = async (req, res) => {
@@ -62,15 +56,9 @@ const updateOneContact = async (req, res) => {
   const { id } = req.params;
   const { body } = req;
 
-  if (!body) {
-    httpError(400, "Missing fields");
-  }
-
   const { contact } = await updateContact(id, body);
   if (contact) {
-    res.json({
-      contact,
-    });
+    res.json(contact);
   } else {
     httpError(404, "Not found");
   }
