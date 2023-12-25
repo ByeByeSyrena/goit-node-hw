@@ -2,7 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
-const { validateFields } = require("../../middlewares");
+const { validateFields, isValidId } = require("../../middlewares");
+const { schemas } = require("../../models");
 
 const {
   getAllContacts,
@@ -10,12 +11,17 @@ const {
   getOneContact,
   deleteContact,
   updateOneContact,
-} = require("../../controllers");
+} = require("../../controllers/contacts");
 
 router.get("/", getAllContacts);
-router.get("/:id", getOneContact);
-router.post("/", validateFields, addOneContact);
-router.delete("/:id", deleteContact);
-router.put("/:id", validateFields, updateOneContact);
+router.get("/:id", isValidId, getOneContact);
+router.post("/", validateFields(schemas.validateBodyContact), addOneContact);
+router.delete("/:id", isValidId, deleteContact);
+router.put(
+  "/:id",
+  isValidId,
+  validateFields(schemas.validateBodyContact),
+  updateOneContact
+);
 
 module.exports = router;
