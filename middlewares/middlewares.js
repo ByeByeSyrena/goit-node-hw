@@ -1,11 +1,11 @@
-const { dataValidator, HttpError } = require("../helpers");
+const { dataValidator, httpError } = require("../helpers");
 
 const validateFields = async (req, res, next) => {
   try {
     const { body } = req;
 
     if (Object.keys(req.body).length === 0) {
-      throw HttpError(400, "missing fields");
+      httpError(400, "missing fields");
     }
 
     const { error } = await dataValidator(body);
