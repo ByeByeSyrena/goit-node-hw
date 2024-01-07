@@ -5,7 +5,9 @@ const validateFields = async (req, res, next) => {
     const { body } = req;
 
     if (Object.keys(req.body).length === 0) {
-      httpError(400, "missing fields");
+      return res.status(400).json({
+        message: "missing fields",
+      });
     }
 
     const { error } = await dataValidator(body);
