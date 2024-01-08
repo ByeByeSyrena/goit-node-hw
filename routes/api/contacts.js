@@ -11,6 +11,7 @@ const {
   getOneContact,
   deleteContact,
   updateOneContact,
+  updateStatusContact,
 } = require("../../controllers/contacts");
 
 router.get("/", getAllContacts);
@@ -22,6 +23,12 @@ router.put(
   isValidId,
   validateFields(schemas.validateBodyContact),
   updateOneContact
+);
+router.patch(
+  "/:id/favorite",
+  isValidId,
+  validateFields(schemas.validateBodyContact),
+  updateStatusContact
 );
 
 module.exports = router;

@@ -6,7 +6,7 @@ const updateStatusContact = async (req, res) => {
   const { id } = req.params;
   const { body } = req;
 
-  const result = await Contact.findByIdAndUpdate(id, body);
+  const result = await Contact.findByIdAndUpdate(id, body, { new: true });
   if (result) {
     res.json({ contact: result });
   } else {
