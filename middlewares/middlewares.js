@@ -1,21 +1,17 @@
-const { dataValidator, httpError } = require("../helpers");
+const { dataValidator, httpError, ctrlWrapper } = require("../helpers");
 
 const validateFields = async (req, res, next) => {
   try {
     const { body } = req;
 
     if (Object.keys(req.body).length === 0) {
-      return res.status(400).json({
-        message: "missing fields",
-      });
+      httpError(400, "missing fields");
     }
 
     const { error } = await dataValidator(body);
 
     if (error) {
-      return res.status(400).json({
-        message: error.message,
-      });
+      httpError(400, error.message);
     }
 
     next();
@@ -24,4 +20,4 @@ const validateFields = async (req, res, next) => {
   }
 };
 
-module.exports = validateFields;
+module.exports = ctrlWrapper(validateFields);
