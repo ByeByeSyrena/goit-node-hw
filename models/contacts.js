@@ -5,22 +5,27 @@ const Joi = require("joi");
 
 const { handleMongooseError } = require("../middlewares");
 
-const contactSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, "Set name for contact"],
+const contactSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Set name for contact"],
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
   },
-  email: {
-    type: String,
-  },
-  phone: {
-    type: String,
-  },
-  favorite: {
-    type: Boolean,
-    default: false,
-  },
-});
+  { versionKey: false }
+);
 
 contactSchema.post("save", handleMongooseError);
 
@@ -34,12 +39,25 @@ const validateBodyContact = Joi.object({
   phone: Joi.string()
     .required()
     .messages({ "any.required": "missing required phone field" }),
-  favorite: Joi.boolean()
-    .required()
-    .messages({ "any.required": "missing field favorite" }),
+  favorite: Joi.boolean(),
 });
 
-const schemas = { validateBodyContact };
+const validateUpdateBodyContact = Joi.object({
+  name: Joi.string(),
+  email: Joi.string(),
+  phone: Joi.string(),
+  favorite: Joi.boolean(),
+});
+
+const validateUpdateStatus = Joi.object({
+  favorite: Joi.boolean().required(),
+});
+
+const schemas = {
+  validateBodyContact,
+  validateUpdateBodyContact,
+  validateUpdateStatus,
+};
 
 const Contact = model("contact", contactSchema);
 

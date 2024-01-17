@@ -10,9 +10,7 @@ const getOneContact = async (req, res) => {
     httpError(404, "Not found");
   }
 
-  res.json({
-    contact,
-  });
+  res.json(contact);
 };
 
 module.exports = { getOneContact: ctrlWrapper(getOneContact) };

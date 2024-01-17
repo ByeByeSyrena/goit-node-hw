@@ -21,13 +21,13 @@ router.delete("/:id", isValidId, deleteContact);
 router.put(
   "/:id",
   isValidId,
-  validateFields(schemas.validateBodyContact),
+  validateFields(schemas.validateUpdateBodyContact),
   updateOneContact
 );
 router.patch(
   "/:id/favorite",
   isValidId,
-  validateFields(schemas.validateBodyContact),
+  validateFields(schemas.validateUpdateStatus),
   updateStatusContact
 );
 

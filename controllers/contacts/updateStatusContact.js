@@ -6,9 +6,13 @@ const updateStatusContact = async (req, res) => {
   const { id } = req.params;
   const { favorite } = req.body;
 
-  const result = await Contact.findByIdAndUpdate(id, favorite, { new: true });
+  const result = await Contact.findByIdAndUpdate(
+    id,
+    { favorite },
+    { new: true }
+  );
   if (result) {
-    res.json({ contact: result });
+    res.json(result);
   } else {
     httpError(404, "Not found");
   }

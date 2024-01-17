@@ -8,7 +8,7 @@ const updateOneContact = async (req, res) => {
 
   const result = await Contact.findByIdAndUpdate(id, body, { new: true });
   if (result) {
-    res.json({ contact: result });
+    res.json(result);
   } else {
     httpError(404, "Not found");
   }
