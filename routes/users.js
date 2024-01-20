@@ -10,6 +10,8 @@ const {
   logoutUser,
   currentUser,
   updateUserAvatar,
+  verifyByToken,
+  resendVerifyLetter,
 } = require("../controllers/users");
 
 const userRouter = express.Router();
@@ -29,4 +31,14 @@ userRouter.patch(
   updateUserAvatar
 );
 
+userRouter.get("/verify/:verificationToken", verifyByToken);
+
+userRouter.post(
+  "/verify",
+  validateFields(userSchemas.email),
+  resendVerifyLetter
+);
+
 module.exports = userRouter;
+
+// "@elasticemail/elasticemail-client";

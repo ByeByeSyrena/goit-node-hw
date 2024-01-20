@@ -22,6 +22,10 @@ const loginUser = async (req, res) => {
     httpError(401, "Email or password is wrong");
   }
 
+  if (!user.verify) {
+    httpError(401, "You must verify your email");
+    return;
+  }
   const payload = { id: user._id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
 
