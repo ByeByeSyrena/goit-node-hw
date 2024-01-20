@@ -5,8 +5,11 @@ const { Contact } = require("../../models");
 const updateOneContact = async (req, res) => {
   const { id } = req.params;
   const { body } = req;
+  const { _id: owner } = req.user;
 
-  const result = await Contact.findByIdAndUpdate(id, body, { new: true });
+  const result = await Contact.findOneAndUpdate({ _id: id, owner }, body, {
+    new: true,
+  });
   if (result) {
     res.json(result);
   } else {

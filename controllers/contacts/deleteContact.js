@@ -3,7 +3,10 @@ const { ctrlWrapper, httpError } = require("../../helpers");
 const { Contact } = require("../../models");
 
 const deleteContact = async (req, res) => {
-  const result = await Contact.findByIdAndDelete(req.params.id);
+  const { _id: owner } = req.user;
+  const { id } = req.params;
+
+  const result = await Contact.findOneAndDelete({ _id: id, owner });
 
   if (result) {
     res.json({

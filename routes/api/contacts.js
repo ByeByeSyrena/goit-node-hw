@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const { validateFields, isValidId } = require("../../middlewares");
+const { validateFields, isValidId, checkToken } = require("../../middlewares");
 const { schemas } = require("../../models");
 
 const {
@@ -13,6 +13,8 @@ const {
   updateOneContact,
   updateStatusContact,
 } = require("../../controllers/contacts");
+
+router.use(checkToken);
 
 router.get("/", getAllContacts);
 router.get("/:id", isValidId, getOneContact);

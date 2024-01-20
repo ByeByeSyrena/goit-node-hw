@@ -1,6 +1,7 @@
-const handleMongooseError = (err, data, next) => {
+function handleMongooseError(err, data, next) {
   err.status = 400;
+
   next();
-};
+}
 
 module.exports = handleMongooseError;
